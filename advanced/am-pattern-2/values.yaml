@@ -20,6 +20,10 @@ wso2:
     username: ""
     password: ""
 
+  u2:
+    username: ""
+    password: ""
+
   deployment:
     dependencies:
       # The configuration should be set to be 'true' if a MySQL database should be spawned as a pod within the cluster
@@ -47,7 +51,7 @@ wso2:
       apacheSolrIndexing:
         # Indicates if persistence of the runtime artifacts for Apache Solr-based indexing is enabled
         # By default, this is disabled
-        enabled: false
+        enabled: true
         # Define capacities for persistent runtime artifact directories
         capacity:
           # For persisting the H2 based local Carbon database file
@@ -101,7 +105,7 @@ wso2:
           periodSeconds: 10
 
         # Number of deployment replicas
-        replicas: 2
+        replicas: 1
 
         # Kubernetes RollingUpdate strategy configurations
         strategy:
@@ -141,7 +145,7 @@ wso2:
           periodSeconds: 10
 
         # Number of deployment replicas
-        replicas: 2
+        replicas: 1
 
         # If the deployment configurations for the Key Manager profile of WSO2 API Manager v3.2.0 (<WSO2AM>/repository/conf/deployment.toml),
         # add the customized configuration file under (wso2 -> deployment -> am -> km -> config -> deployment.toml)
@@ -213,7 +217,7 @@ wso2:
         imagePullPolicy: Always
 
         # Number of deployment replicas
-        replicas: 1
+        replicas: 0
 
         # Kubernetes RollingUpdate strategy configurations
         strategy:

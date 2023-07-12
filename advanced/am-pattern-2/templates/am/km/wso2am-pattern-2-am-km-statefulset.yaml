@@ -100,6 +100,9 @@ spec:
             - name: wso2am-km-conf
               mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
               subPath: deployment.toml
+            - name: wso2am-conf-entrypoint
+              mountPath: /home/wso2carbon/docker-entrypoint.sh
+              subPath: docker-entrypoint.sh
             {{ if .Values.wso2.deployment.dependencies.mysql }}
             - name: mysql-connector-jar
               mountPath: /home/wso2carbon/wso2-artifact-volume/repository/components/dropins
@@ -116,6 +119,10 @@ spec:
       - name: wso2am-km-conf
         configMap:
           name: {{ template "am-pattern-2.resource.prefix" . }}-am-km-conf
+      - name: wso2am-conf-entrypoint
+        configMap:
+          name: {{ template "am-pattern-2.resource.prefix" . }}-am-km-entrypoint
+          defaultMode: 0407     
       {{ if .Values.wso2.deployment.dependencies.mysql }}
       - name: mysql-connector-jar
         emptyDir: {}

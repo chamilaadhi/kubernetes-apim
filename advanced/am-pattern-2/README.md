@@ -53,32 +53,6 @@ You can install the relevant Helm chart either from [WSO2 Helm Chart Repository]
 
 * `NAMESPACE` should be the Kubernetes Namespace in which the resources are deployed.
 
-#### Install Chart From [WSO2 Helm Chart Repository](https://hub.helm.sh/charts/wso2)
-
- Helm version 2
-
- ```
- helm install --name <RELEASE_NAME> wso2/am-pattern-2 --version 3.2.0-5 --namespace <NAMESPACE>
- ```
-
- Helm version 3
-
- - Deploy the Kubernetes resources using the Helm Chart
- 
-    ```
-    helm install <RELEASE_NAME> wso2/am-pattern-2 --version 3.2.0-5 --namespace <NAMESPACE> --create-namespace
-    ```
-
-The above steps will deploy the deployment pattern using WSO2 product Docker images available at DockerHub.
-
-If you are using WSO2 product Docker images available from WSO2 Private Docker Registry,
-please provide your WSO2 Subscription credentials via input values (using `--set` argument). 
-
-Please see the following example.
-
-```
- helm install --name <RELEASE_NAME> wso2/am-pattern-2 --version 3.2.0-5 --namespace <NAMESPACE> --set wso2.subscription.username=<SUBSCRIPTION_USERNAME> --set wso2.subscription.password=<SUBSCRIPTION_PASSWORD>
-```
 
 #### Install Chart From Source
 
@@ -90,35 +64,22 @@ Git repository. <br>
 ##### Clone the Helm Resources for WSO2 API Manager Git repository.
 
 ```
-git clone https://github.com/wso2/kubernetes-apim.git
+git clone https://github.com/wso2/kubernetes-apim.git and checkout 3.2.x-profile-testing branch
 ```
 
 ##### Deploy Helm chart for WSO2 API Manager Pattern 2 deployment.
 
- Helm version 2
-
- ```
- helm install --dep-up --name <RELEASE_NAME> <HELM_HOME>/am-pattern-2 --version 3.2.0-5 --namespace <NAMESPACE>
- ```
 
  Helm version 3
 
  - Deploy the Kubernetes resources using the Helm Chart
  
     ```
-    helm install <RELEASE_NAME> <HELM_HOME>/am-pattern-2 --version 3.2.0-5 --namespace <NAMESPACE> --dependency-update --create-namespace
+    helm install wso2am <path>/kubernetes-apim/advanced/am-pattern-2 --version 3.2.0-5 --namespace wso2 --dependency-update --create-namespace --set wso2.subscription.username=xxxx --set wso2.subscription.password=xxxx --set wso2.u2.username=xxxx --set wso2.u2.password=xxxx
     ```
 
 The above steps will deploy the deployment pattern using WSO2 product Docker images available at DockerHub.
 
-If you are using WSO2 product Docker images available from WSO2 Private Docker Registry,
-please provide your WSO2 Subscription credentials via input values (using `--set` argument). 
-
-Please see the following example.
-
-```
- helm install --name <RELEASE_NAME> <HELM_HOME>/am-pattern-2 --version 3.2.0-5 --namespace <NAMESPACE> --set wso2.subscription.username=<SUBSCRIPTION_USERNAME> --set wso2.subscription.password=<SUBSCRIPTION_PASSWORD>
-```
 
 ### 2. Obtain the external IP
 

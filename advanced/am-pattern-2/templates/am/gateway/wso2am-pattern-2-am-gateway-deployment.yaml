@@ -35,18 +35,18 @@ spec:
         deployment: {{ template "am-pattern-2.resource.prefix" . }}-am-gateway
     spec:
       initContainers:
-      - name: init-apim-analytics
-        image: busybox:1.32
-        command: ['sh', '-c', 'echo -e "Checking for the availability of WSO2 API Manager Analytics Worker deployment"; while ! nc -z {{ template "am-pattern-2.resource.prefix" . }}-am-analytics-worker-service 7712; do sleep 1; printf "-"; done; echo -e "  >> WSO2 API Manager Analytics Worker has started";']
+#      - name: init-apim-analytics
+#        image: busybox:1.32
+#        command: ['sh', '-c', 'echo -e "Checking for the availability of WSO2 API Manager Analytics Worker deployment"; while ! nc -z {{ template "am-pattern-2.resource.prefix" . }}-am-analytics-worker-service 7712; do sleep 1; printf "-"; done; echo -e "  >> WSO2 API Manager Analytics Worker has started";']
       - name: init-km
         image: busybox:1.32
         command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "am-pattern-2.resource.prefix" . }}-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']
       - name: init-apim-1
         image: busybox:1.32
         command: ['sh', '-c', 'echo -e "Checking for the availability of API Manager instance one deployment"; while ! nc -z {{ template "am-pattern-2.resource.prefix" . }}-am-1-service 9611; do sleep 1; printf "-"; done; echo -e "  >> API Manager instance one has started";']
-      - name: init-apim-2
-        image: busybox:1.32
-        command: ['sh', '-c', 'echo -e "Checking for the availability of API Manager instance two deployment"; while ! nc -z {{ template "am-pattern-2.resource.prefix" . }}-am-2-service 9611; do sleep 1; printf "-"; done; echo -e "  >> API Manager instance two has started";']
+#      - name: init-apim-2
+#        image: busybox:1.32
+#        command: ['sh', '-c', 'echo -e "Checking for the availability of API Manager instance two deployment"; while ! nc -z {{ template "am-pattern-2.resource.prefix" . }}-am-2-service 9611; do sleep 1; printf "-"; done; echo -e "  >> API Manager instance two has started";']
       containers:
       - name: wso2am-gateway
 {{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.am) | indent 8 }}
@@ -105,6 +105,9 @@ spec:
         - name: wso2am-gateway-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
           subPath: deployment.toml
+        - name: wso2am-conf-entrypoint
+          mountPath: /home/wso2carbon/docker-entrypoint.sh
+          subPath: docker-entrypoint.sh
       serviceAccountName: {{ .Values.kubernetes.serviceAccount }}
       {{- if .Values.wso2.deployment.am.imagePullSecrets }}
       imagePullSecrets:
@@ -120,3 +123,7 @@ spec:
       - name: wso2am-gateway-conf
         configMap:
           name: {{ template "am-pattern-2.resource.prefix" . }}-am-gateway-conf
+      - name: wso2am-conf-entrypoint
+        configMap:
+          name: {{ template "am-pattern-2.resource.prefix" . }}-am-gateway-entrypoint
+          defaultMode: 0407   
