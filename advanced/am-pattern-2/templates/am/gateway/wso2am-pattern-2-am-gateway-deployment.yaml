@@ -105,9 +105,11 @@ spec:
         - name: wso2am-gateway-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
           subPath: deployment.toml
+        {{ if and (not (eq .Values.wso2.u2.username "")) (not (eq .Values.wso2.u2.password "")) }}
         - name: wso2am-conf-entrypoint
           mountPath: /home/wso2carbon/docker-entrypoint.sh
           subPath: docker-entrypoint.sh
+        {{ end }}
       serviceAccountName: {{ .Values.kubernetes.serviceAccount }}
       {{- if .Values.wso2.deployment.am.imagePullSecrets }}
       imagePullSecrets:

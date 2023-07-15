@@ -115,6 +115,10 @@ spec:
             - name: wso2am-conf-entrypoint
               mountPath: /home/wso2carbon/docker-entrypoint.sh
               subPath: docker-entrypoint.sh
+            {{ else if and (not (eq .Values.wso2.u2.username "")) (not (eq .Values.wso2.u2.password "")) }} 
+            - name: wso2am-conf-entrypoint
+              mountPath: /home/wso2carbon/docker-entrypoint.sh
+              subPath: docker-entrypoint.sh
             {{ end }}
             {{ if .Values.wso2.deployment.dependencies.mysql }}
             - name: mysql-connector-jar
@@ -146,6 +150,11 @@ spec:
           configMap:
             name: {{ template "am-pattern-2.resource.prefix" . }}-am-conf-entrypoint
             defaultMode: 0407
+        {{ else if and (not (eq .Values.wso2.u2.username "")) (not (eq .Values.wso2.u2.password "")) }} 
+        - name: wso2am-conf-entrypoint
+          configMap:
+            name: {{ template "am-pattern-2.resource.prefix" . }}-am-conf-entrypoint
+            defaultMode: 0407           
         {{ end }}
         {{ if .Values.wso2.deployment.dependencies.mysql }}
         - name: mysql-connector-jar
