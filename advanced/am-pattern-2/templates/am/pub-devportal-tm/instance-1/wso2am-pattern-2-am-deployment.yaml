@@ -115,7 +115,8 @@ spec:
             - name: wso2am-conf-entrypoint
               mountPath: /home/wso2carbon/docker-entrypoint.sh
               subPath: docker-entrypoint.sh
-            {{ else if and (not (eq .Values.wso2.u2.username "")) (not (eq .Values.wso2.u2.password "")) }} 
+            {{ end }}
+            {{ if and (not (eq .Values.wso2.u2.username "")) (not (eq .Values.wso2.u2.password "")) }}
             - name: wso2am-conf-entrypoint
               mountPath: /home/wso2carbon/docker-entrypoint.sh
               subPath: docker-entrypoint.sh
