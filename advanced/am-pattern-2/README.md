@@ -75,7 +75,7 @@ git clone https://github.com/wso2/kubernetes-apim.git and checkout 3.2.x-profile
  - Deploy the Kubernetes resources using the Helm Chart
  
     ```
-    helm install wso2am <path>/kubernetes-apim/advanced/am-pattern-2 --version 3.2.0-5 --namespace wso2 --dependency-update --create-namespace --set wso2.subscription.username=xxxx --set wso2.subscription.password=xxxx --set wso2.u2.username=xxxx --set wso2.u2.password=xxxx
+    helm install <RELEASE_NAME> <path>/kubernetes-apim/advanced/am-pattern-2 --version 3.2.0-5 --namespace <NAMESPACE> --dependency-update --create-namespace --set wso2.subscription.username=xxxx --set wso2.subscription.password=xxxx --set wso2.u2.username=xxxx --set wso2.u2.password=xxxx
     ```
 
 The above steps will deploy the deployment pattern using WSO2 product Docker images available at DockerHub.
