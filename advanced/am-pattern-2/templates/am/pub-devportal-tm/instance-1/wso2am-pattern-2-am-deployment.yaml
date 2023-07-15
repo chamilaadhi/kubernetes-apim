@@ -51,6 +51,9 @@ spec:
             - name: mysql-connector-jar
               mountPath: /mysql-connector-jar
         {{ end }}
+        - name: init-km
+          image: busybox:1.32
+          command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "am-pattern-2.resource.prefix" . }}-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']
       containers:
         - name: wso2am
 {{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.am) | indent 10 }}
