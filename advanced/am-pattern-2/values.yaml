@@ -305,6 +305,7 @@ wso2:
             nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
       worker:
+        enable: false
         # Container image configurations
         # If a custom image must be used, uncomment 'dockerRegistry' and provide its value.
         # dockerRegistry: ""
