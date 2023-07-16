@@ -92,7 +92,11 @@ data:
     type = "loadbalance"
 
     [apim.analytics]
+    {{ if .Values.wso2.deployment.analytics.worker.enable }}
+    enable = "true"
+    {{ else }}
     enable = "false"
+    {{ end }}
     username= "$ref{super_admin.username}"
     password= "$ref{super_admin.password}"
     store_api_url = "https://{{ template "am-pattern-2.resource.prefix" . }}-am-analytics-worker-service:7444"
