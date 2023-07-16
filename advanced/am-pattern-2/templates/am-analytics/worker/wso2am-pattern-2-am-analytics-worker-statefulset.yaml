@@ -19,7 +19,7 @@ metadata:
   name: {{ template "am-pattern-2.resource.prefix" . }}-am-analytics-worker-statefulset
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       deployment: {{ template "am-pattern-2.resource.prefix" . }}-analytics-worker
