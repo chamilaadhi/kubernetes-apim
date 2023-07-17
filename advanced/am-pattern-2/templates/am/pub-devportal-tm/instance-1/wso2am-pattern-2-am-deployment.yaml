@@ -51,6 +51,11 @@ spec:
             - name: mysql-connector-jar
               mountPath: /mysql-connector-jar
         {{ end }}
+        {{ if .Values.wso2.deployment.analytics.worker.enable }}
+        - name: init-apim-analytics
+          image: busybox:1.32
+          command: ['sh', '-c', 'echo -e "Checking for the availability of WSO2 API Manager Analytics Worker deployment"; while ! nc -z {{ template "am-pattern-2.resource.prefix" . }}-am-analytics-worker-service 7712; do sleep 1; printf "-"; done; echo -e "  >> WSO2 API Manager Analytics Worker has started";']
+        {{ end }}
         - name: init-km
           image: busybox:1.32
           command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "am-pattern-2.resource.prefix" . }}-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']
