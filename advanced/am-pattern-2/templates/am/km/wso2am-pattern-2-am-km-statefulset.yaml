@@ -29,12 +29,14 @@ spec:
         checksum.am.km.conf: {{ include (print $.Template.BasePath "/am/km/wso2am-pattern-2-am-km-conf.yaml") . | sha256sum }}
       labels:
         deployment: {{ template "am-pattern-2.resource.prefix" . }}-km
+        product: apim
     spec:
-      {{ if .Values.wso2.deployment.dependencies.mysql }}
       initContainers:
+      {{ if .Values.wso2.deployment.dependencies.mysql }}
         - name: init-mysql-db
           image: busybox:1.32
           command: ['sh', '-c', 'echo -e "Checking for the availability of DBMS service"; while ! nc -z "wso2am-mysql-db-service" 3306; do sleep 1; printf "-"; done; echo -e "  >> MySQL Server has started";']
+      {{ end }}
         - name: init-mysql-connector-download
           image: busybox:1.32
           command:
@@ -47,7 +49,6 @@ spec:
           volumeMounts:
             - name: mysql-connector-jar
               mountPath: /mysql-connector-jar
-      {{- end }}
       containers:
         - name: wso2am-km
 {{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.am) | indent 10 }}
@@ -114,10 +115,8 @@ spec:
               mountPath: /home/wso2carbon/docker-entrypoint.sh
               subPath: docker-entrypoint.sh
             {{ end }}
-            {{ if .Values.wso2.deployment.dependencies.mysql }}
             - name: mysql-connector-jar
               mountPath: /home/wso2carbon/wso2-artifact-volume/repository/components/dropins
-            {{ end }}
       serviceAccountName: {{ .Values.kubernetes.serviceAccount }}
       {{- if .Values.wso2.deployment.am.imagePullSecrets }}
       imagePullSecrets:
@@ -134,7 +133,5 @@ spec:
         configMap:
           name: {{ template "am-pattern-2.resource.prefix" . }}-am-km-entrypoint
           defaultMode: 0407     
-      {{ if .Values.wso2.deployment.dependencies.mysql }}
       - name: mysql-connector-jar
         emptyDir: {}
-      {{ end }}

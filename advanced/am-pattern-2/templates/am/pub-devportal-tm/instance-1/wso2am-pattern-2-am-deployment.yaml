@@ -32,12 +32,14 @@ spec:
       labels:
         deployment: {{ template "am-pattern-2.resource.prefix" . }}-am
         node: {{ template "am-pattern-2.resource.prefix" . }}-am-1
+        product: apim
     spec:
       initContainers:
         {{ if .Values.wso2.deployment.dependencies.mysql }}
         - name: init-mysql-db
           image: busybox:1.32
           command: ['sh', '-c', 'echo -e "Checking for the availability of MySQL Server deployment"; while ! nc -z "wso2am-mysql-db-service" 3306; do sleep 1; printf "-"; done; echo -e "  >> MySQL Server has started";']
+        {{ end }}
         - name: init-mysql-connector-download
           image: busybox:1.32
           command:
@@ -50,7 +52,6 @@ spec:
           volumeMounts:
             - name: mysql-connector-jar
               mountPath: /mysql-connector-jar
-        {{ end }}
         {{ if .Values.wso2.deployment.analytics.worker.enable }}
         - name: init-apim-analytics
           image: busybox:1.32
@@ -139,10 +140,8 @@ spec:
               mountPath: /home/wso2carbon/docker-entrypoint.sh
               subPath: docker-entrypoint.sh
             {{ end }}
-            {{ if .Values.wso2.deployment.dependencies.mysql }}
             - name: mysql-connector-jar
               mountPath: /home/wso2carbon/wso2-artifact-volume/repository/components/dropins
-            {{ end }}
       serviceAccountName: {{ .Values.kubernetes.serviceAccount }}
       {{- if .Values.wso2.deployment.am.imagePullSecrets }}
       imagePullSecrets:
@@ -177,7 +176,5 @@ spec:
             name: {{ template "am-pattern-2.resource.prefix" . }}-am-conf-entrypoint
             defaultMode: 0407           
         {{ end }}
-        {{ if .Values.wso2.deployment.dependencies.mysql }}
         - name: mysql-connector-jar
           emptyDir: {}
-        {{ end }}
