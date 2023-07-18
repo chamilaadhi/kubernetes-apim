@@ -38,6 +38,9 @@ data:
     test ! -d ${WSO2_SERVER_HOME} && echo "WSO2 Docker product home does not exist" && exit 1
 
     # Update product to the staging pack
+    {{ if or (eq .Values.wso2.u2.username "") (eq .Values.wso2.u2.password "") }}
+    echo "=========================== u2 credentials not provided. Not updating the product ================================="
+    {{ else }}
     echo "========================================== update product=========================================================="
 
     # set staging environment 
@@ -55,7 +58,8 @@ data:
 
 
     echo "===================================================================================================================="
-
+    {{ end }}
+    
     # shared artifact directories
     directories=("executionplans" "synapse-configs")
     # if the original directory locations of artifacts to be synced between nodes are empty,
