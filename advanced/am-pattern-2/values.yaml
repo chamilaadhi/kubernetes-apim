@@ -66,7 +66,7 @@ wso2:
       imageName: "wso2am"
       imageTag: "3.2.0"
       # Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
-      imagePullPolicy: IfNotPresent
+      imagePullPolicy: Always
 
       resources:
         # These are the resource recommendations for running WSO2 API Management product profiles with profile optimization
@@ -327,7 +327,7 @@ wso2:
         imageName: "wso2am-analytics-worker"
         imageTag: "3.2.0"
         # Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
 
         # Indicates whether the container is running.
         livenessProbe:
