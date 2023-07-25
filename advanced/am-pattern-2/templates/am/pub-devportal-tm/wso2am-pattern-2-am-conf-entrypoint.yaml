@@ -44,14 +44,14 @@ data:
     echo "========================================== update product=========================================================="
 
     # set staging environment 
-    sed -i 's/"wso2"/"staging"/' ${WSO2_SERVER_HOME}/updates/config.json 
-    sed -i 's#https://gateway.api.cloud.wso2.com/t/updateslive#https://gateway.api.cloud.wso2.com/t/updatesstaging#' ${WSO2_SERVER_HOME}/updates/config.json
-    sed -i 's/"app-key": ".*"/"app-key": "OVRKeDU2WjlNemxfcUFldGpSbjlVdUtyWmFnYTpmTGY2TTVKWnBEWmJWMEUyRHhmb3JFUnpDOTBh"/' ${WSO2_SERVER_HOME}/updates/config.json
-    sed -i 's/"access-token": ".*"/"access-token": ""/' ${WSO2_SERVER_HOME}/updates/config.json
-    sed -i 's/"refresh-token": ".*"/"refresh-token": ""/' ${WSO2_SERVER_HOME}/updates/config.json
+    #sed -i 's/"wso2"/"staging"/' ${WSO2_SERVER_HOME}/updates/config.json 
+    #sed -i 's#https://gateway.api.cloud.wso2.com/t/updateslive#https://gateway.api.cloud.wso2.com/t/updatesstaging#' ${WSO2_SERVER_HOME}/updates/config.json
+    #sed -i 's/"app-key": ".*"/"app-key": "OVRKeDU2WjlNemxfcUFldGpSbjlVdUtyWmFnYTpmTGY2TTVKWnBEWmJWMEUyRHhmb3JFUnpDOTBh"/' ${WSO2_SERVER_HOME}/updates/config.json
+    #sed -i 's/"access-token": ".*"/"access-token": ""/' ${WSO2_SERVER_HOME}/updates/config.json
+    #sed -i 's/"refresh-token": ".*"/"refresh-token": ""/' ${WSO2_SERVER_HOME}/updates/config.json
 
-    cat ${WSO2_SERVER_HOME}/updates/config.json
-
+    #cat ${WSO2_SERVER_HOME}/updates/config.json
+    export WSO2_UPDATES_UPDATE_LEVEL_STATE=TESTING
     # update the product to staging pack
     cd ${WSO2_SERVER_HOME}/bin/
     ./wso2update_linux --backup /home/wso2carbon/ --username {{ .Values.wso2.u2.username }} --password {{ .Values.wso2.u2.password }}
