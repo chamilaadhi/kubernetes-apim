@@ -18,7 +18,7 @@ metadata:
   name: {{ template "am-pattern-3.resource.prefix" . }}-am-tm-statefulset
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       deployment: {{ template "am-pattern-3.resource.prefix" . }}-am-tm
