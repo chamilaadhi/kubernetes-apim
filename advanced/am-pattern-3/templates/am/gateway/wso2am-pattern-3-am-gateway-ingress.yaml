@@ -33,7 +33,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ template "am-pattern-2.resource.prefix" . }}-am-gateway-service
+            name: {{ template "am-pattern-3.resource.prefix" . }}-am-gateway-service
             port:
               number: 9443
       - path: /
