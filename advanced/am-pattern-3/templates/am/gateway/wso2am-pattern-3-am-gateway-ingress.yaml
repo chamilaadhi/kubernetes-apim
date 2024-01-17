@@ -29,6 +29,13 @@ spec:
   - host: {{ .Values.wso2.deployment.am.gateway.ingress.hostname }}
     http:
       paths:
+      - path: /api/am/gateway/v1/
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ template "am-pattern-2.resource.prefix" . }}-am-gateway-service
+            port:
+              number: 9443
       - path: /
         pathType: Prefix
         backend:
