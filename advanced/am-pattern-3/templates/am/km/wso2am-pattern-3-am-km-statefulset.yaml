@@ -53,6 +53,8 @@ spec:
 {{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.am) | indent 10 }}
           imagePullPolicy: {{ .Values.wso2.deployment.am.imagePullPolicy }}
           env:
+          - name: WSO2_UPDATES_UPDATE_LEVEL_STATE
+            value: {{ .Values.wso2.subscription.updateLevelState }}
           - name: PROFILE_NAME
             value: api-key-manager
           - name: NODE_IP
@@ -97,6 +99,9 @@ spec:
             - containerPort: 9443
               protocol: TCP
           volumeMounts:
+            - name: wso2am-conf-entrypoint
+              mountPath: /home/wso2carbon/docker-entrypoint.sh
+              subPath: docker-entrypoint.sh
             - name: wso2am-km-conf
               mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
               subPath: deployment.toml
@@ -113,6 +118,10 @@ spec:
         - name: {{ template "am-pattern-3.resource.prefix" . }}-wso2-private-registry-creds
       {{ end }}
       volumes:
+      - name: wso2am-conf-entrypoint
+        configMap:
+          name: {{ template "am-pattern-3.resource.prefix" . }}-am-km-entrypoint
+          defaultMode: 0407
       - name: wso2am-km-conf
         configMap:
           name: {{ template "am-pattern-3.resource.prefix" . }}-am-km-conf

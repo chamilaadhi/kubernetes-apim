@@ -56,6 +56,8 @@ spec:
 {{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.am) | indent 10 }}
           imagePullPolicy: {{ .Values.wso2.deployment.am.imagePullPolicy }}
           env:
+            - name: WSO2_UPDATES_UPDATE_LEVEL_STATE
+              value: {{ .Values.wso2.subscription.updateLevelState }}
             - name: PROFILE_NAME
               value: "traffic-manager"
             - name: NODE_IP

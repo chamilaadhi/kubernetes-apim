@@ -1,4 +1,3 @@
-
 # Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +15,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "am-pattern-3.resource.prefix" . }}-am-publisher-entrypoint
+  name: {{ template "am-pattern-3.resource.prefix" . }}-am-km-entrypoint
   namespace: {{ .Release.Namespace }}
 data:
   docker-entrypoint.sh: |
@@ -42,7 +41,7 @@ data:
     echo "Updating apim to $WSO2_UPDATES_UPDATE_LEVEL_STATE pack ............."
     cd ${WSO2_SERVER_HOME}/bin/
     ./wso2update_linux --backup /home/wso2carbon/ --username {{ .Values.wso2.subscription.username }} --password {{ .Values.wso2.subscription.password }}
-
+    
     # log update ids
     log_directory="../updates/logs"
     for log_file in "$log_directory"/*; do
@@ -53,7 +52,7 @@ data:
     done
     echo "===================================================================================================================="
 
-    
+
     # shared artifact directories
     directories=("executionplans" "synapse-configs")
     # if the original directory locations of artifacts to be synced between nodes are empty,

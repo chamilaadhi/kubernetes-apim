@@ -49,6 +49,8 @@ spec:
 {{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.am) | indent 8 }}
         imagePullPolicy: {{ .Values.wso2.deployment.am.imagePullPolicy }}
         env:
+        - name: WSO2_UPDATES_UPDATE_LEVEL_STATE
+          value: {{ .Values.wso2.subscription.updateLevelState }}
         - name: PROFILE_NAME
           value: gateway-worker
         - name: NODE_IP
@@ -97,6 +99,9 @@ spec:
         - containerPort: 9443
           protocol: TCP
         volumeMounts:
+        - name: wso2am-conf-entrypoint
+          mountPath: /home/wso2carbon/docker-entrypoint.sh
+          subPath: docker-entrypoint.sh
         - name: wso2am-gateway-storage-volume
           mountPath: /home/wso2carbon/wso2am-3.2.0/repository/deployment/server/synapse-configs
         - name: wso2am-gateway-conf
@@ -110,6 +115,10 @@ spec:
         - name: {{ template "am-pattern-3.resource.prefix" . }}-wso2-private-registry-creds
       {{ end }}
       volumes:
+      - name: wso2am-conf-entrypoint
+        configMap:
+          name: {{ template "am-pattern-3.resource.prefix" . }}-am-gateway-entrypoint
+          defaultMode: 0407
       - name: wso2am-gateway-storage-volume
         persistentVolumeClaim:
           claimName: {{ template "am-pattern-3.resource.prefix" . }}-am-gateway-shared-synapse-configs-volume-claim
