@@ -53,6 +53,8 @@ spec:
 {{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.analytics.worker) | indent 10 }}
           imagePullPolicy: {{ .Values.wso2.deployment.analytics.worker.imagePullPolicy }}
           env:
+            - name: WSO2_UPDATES_UPDATE_LEVEL_STATE
+              value: {{ .Values.wso2.subscription.updateLevelState }}
             - name: NODE_IP
               valueFrom:
                 fieldRef:
@@ -98,6 +100,9 @@ spec:
             - containerPort: 7444
               protocol: "TCP"
           volumeMounts:
+            - name: wso2am-conf-entrypoint
+              mountPath: /home/wso2carbon/docker-entrypoint.sh
+              subPath: docker-entrypoint.sh
             - name: wso2am-analytics-worker-conf
               mountPath: /home/wso2carbon/wso2-config-volume/conf/worker/deployment.yaml
               subPath: deployment.yaml
@@ -120,6 +125,9 @@ spec:
         - name: wso2am-analytics-worker-conf
           configMap:
             name: {{ template "am-pattern-3.resource.prefix" . }}-am-analytics-worker-conf
+        - name: wso2am-conf-entrypoint
+          configMap:
+            name: {{ template "am-pattern-3.resource.prefix" . }}-am-analytics-worker-entrypoint
         - name: wso2am-analytics-worker-bin
           configMap:
             name: {{ template "am-pattern-3.resource.prefix" . }}-am-analytics-worker-bin
