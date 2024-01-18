@@ -100,9 +100,6 @@ spec:
             - containerPort: 7444
               protocol: "TCP"
           volumeMounts:
-            - name: wso2am-conf-entrypoint
-              mountPath: /home/wso2carbon/docker-entrypoint.sh
-              subPath: docker-entrypoint.sh
             - name: wso2am-analytics-worker-conf
               mountPath: /home/wso2carbon/wso2-config-volume/conf/worker/deployment.yaml
               subPath: deployment.yaml
@@ -122,9 +119,6 @@ spec:
         - name: {{ template "am-pattern-3.resource.prefix" . }}-wso2-private-registry-creds
       {{- end }}
       volumes:
-        - name: wso2am-analytics-worker-conf
-          configMap:
-            name: {{ template "am-pattern-3.resource.prefix" . }}-am-analytics-worker-conf
         - name: wso2am-conf-entrypoint
           configMap:
             name: {{ template "am-pattern-3.resource.prefix" . }}-am-analytics-worker-entrypoint
