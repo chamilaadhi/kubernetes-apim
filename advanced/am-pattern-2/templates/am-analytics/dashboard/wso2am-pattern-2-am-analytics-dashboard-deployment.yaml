@@ -60,26 +60,6 @@ spec:
         env:
           - name: WSO2_UPDATES_UPDATE_LEVEL_STATE
             value: {{ .Values.wso2.subscription.updateLevelState }}
-        livenessProbe:
-          exec:
-            command:
-              - /bin/sh
-              - -c
-              - nc -z localhost 9643
-          initialDelaySeconds: {{ .Values.wso2.deployment.analytics.dashboard.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.wso2.deployment.analytics.dashboard.livenessProbe.periodSeconds }}
-        readinessProbe:
-          exec:
-            command:
-              - /bin/sh
-              - -c
-              - nc -z localhost 9643
-          initialDelaySeconds: {{ .Values.wso2.deployment.analytics.dashboard.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.wso2.deployment.analytics.dashboard.readinessProbe.periodSeconds }}
-        lifecycle:
-          preStop:
-            exec:
-              command:  ['sh', '-c', '${WSO2_SERVER_HOME}/bin/dashboard.sh stop']
         resources:
           requests:
             memory: {{ .Values.wso2.deployment.analytics.dashboard.resources.requests.memory }}
