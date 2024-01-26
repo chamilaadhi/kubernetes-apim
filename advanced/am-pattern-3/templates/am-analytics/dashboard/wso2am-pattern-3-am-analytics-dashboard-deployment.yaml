@@ -62,26 +62,9 @@ spec:
       - name: wso2am-analytics-dashboard
 {{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.analytics.dashboard) | indent 8 }}
         imagePullPolicy: {{ .Values.wso2.deployment.analytics.dashboard.imagePullPolicy }}
-        livenessProbe:
-          exec:
-            command:
-              - /bin/sh
-              - -c
-              - nc -z localhost 9643
-          initialDelaySeconds: {{ .Values.wso2.deployment.analytics.dashboard.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.wso2.deployment.analytics.dashboard.livenessProbe.periodSeconds }}
-        readinessProbe:
-          exec:
-            command:
-              - /bin/sh
-              - -c
-              - nc -z localhost 9643
-          initialDelaySeconds: {{ .Values.wso2.deployment.analytics.dashboard.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.wso2.deployment.analytics.dashboard.readinessProbe.periodSeconds }}
-        lifecycle:
-          preStop:
-            exec:
-              command:  ['sh', '-c', '${WSO2_SERVER_HOME}/bin/dashboard.sh stop']
+        env:
+          - name: WSO2_UPDATES_UPDATE_LEVEL_STATE
+            value: {{ .Values.wso2.subscription.updateLevelState }}
         resources:
           requests:
             memory: {{ .Values.wso2.deployment.analytics.dashboard.resources.requests.memory }}
@@ -95,6 +78,8 @@ spec:
           - containerPort: 9643
             protocol: "TCP"
         volumeMounts:
+          - name: wso2am-conf-entrypoint
+            mountPath: /home/wso2carbon/docker-entrypoint.sh
           - name: wso2am-analytics-dashboard-conf
             mountPath: /home/wso2carbon/wso2-config-volume/conf/dashboard/deployment.yaml
             subPath: deployment.yaml
@@ -114,6 +99,10 @@ spec:
         - name: {{ template "am-pattern-3.resource.prefix" . }}-wso2-private-registry-creds
       {{ end }}
       volumes:
+        - name: wso2am-conf-entrypoint
+          configMap:
+            name: {{ template "am-pattern-3.resource.prefix" . }}-am-analytics-dashboard-entrypoint
+            defaultMode: 0407
         - name: wso2am-analytics-dashboard-conf
           configMap:
             name: {{ template "am-pattern-3.resource.prefix" . }}-am-analytics-dashboard-conf
