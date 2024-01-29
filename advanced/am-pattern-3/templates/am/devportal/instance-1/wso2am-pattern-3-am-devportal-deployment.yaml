@@ -30,6 +30,7 @@ spec:
         checksum.am.devportal.conf: {{ include (print $.Template.BasePath "/am/devportal/wso2am-pattern-3-am-devportal-conf.yaml") . | sha256sum }}
       labels:
         deployment: {{ template "am-pattern-3.resource.prefix" . }}-am-devportal
+        product: apim
     spec:
       initContainers:
         {{- if .Values.wso2.deployment.dependencies.mysql }}
@@ -49,9 +50,6 @@ spec:
             - name: mysql-connector-jar
               mountPath: /mysql-connector-jar
         {{- end }}
-        - name: init-apim-analytics
-          image: busybox:1.32
-          command: ['sh', '-c', 'echo -e "Checking for the availability of WSO2 API Manager Analytics Worker deployment"; while ! nc -z {{ template "am-pattern-3.resource.prefix" . }}-am-analytics-worker-service 7712; do sleep 1; printf "-"; done; echo -e "  >> WSO2 API Manager Analytics Worker has started";']
         - name: init-km
           image: busybox:1.32
           command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "am-pattern-3.resource.prefix" . }}-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']

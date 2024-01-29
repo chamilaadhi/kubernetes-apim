@@ -33,11 +33,9 @@ spec:
         checksum.am.km.conf: {{ include (print $.Template.BasePath "/am/gateway/wso2am-pattern-3-am-gateway-conf.yaml") . | sha256sum }}
       labels:
         deployment: {{ template "am-pattern-3.resource.prefix" . }}-am-gateway
+        product: apim
     spec:
       initContainers:
-      - name: init-apim-analytics
-        image: busybox:1.32
-        command: ['sh', '-c', 'echo -e "Checking for the availability of WSO2 API Manager Analytics Worker deployment"; while ! nc -z {{ template "am-pattern-3.resource.prefix" . }}-am-analytics-worker-service 7712; do sleep 1; printf "-"; done; echo -e "  >> WSO2 API Manager Analytics Worker has started";']
       - name: init-km
         image: busybox:1.32
         command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "am-pattern-3.resource.prefix" . }}-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']
@@ -104,8 +102,10 @@ spec:
           subPath: docker-entrypoint.sh
         - name: wso2am-gateway-storage-volume
           mountPath: /home/wso2carbon/wso2am-3.2.0/repository/deployment/server/synapse-configs
+        {{ if .Values.wso2.deployment.dependencies.nfsServerProvisioner }}
         - name: wso2am-gateway-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf
+        {{ end }}
       serviceAccountName: {{ .Values.kubernetes.serviceAccount }}
       {{- if .Values.wso2.deployment.am.imagePullSecrets }}
       imagePullSecrets:
@@ -119,9 +119,11 @@ spec:
         configMap:
           name: {{ template "am-pattern-3.resource.prefix" . }}-am-gateway-entrypoint
           defaultMode: 0407
+      {{ if .Values.wso2.deployment.dependencies.nfsServerProvisioner }}
       - name: wso2am-gateway-storage-volume
         persistentVolumeClaim:
           claimName: {{ template "am-pattern-3.resource.prefix" . }}-am-gateway-shared-synapse-configs-volume-claim
+      {{ else }}
       - name: wso2am-gateway-conf
         configMap:
           name: {{ template "am-pattern-3.resource.prefix" . }}-am-gateway-conf
