@@ -100,9 +100,9 @@ spec:
         - name: wso2am-conf-entrypoint
           mountPath: /home/wso2carbon/docker-entrypoint.sh
           subPath: docker-entrypoint.sh
+        {{ if .Values.wso2.deployment.dependencies.nfsServerProvisioner }}
         - name: wso2am-gateway-storage-volume
           mountPath: /home/wso2carbon/wso2am-3.2.0/repository/deployment/server/synapse-configs
-        {{ if .Values.wso2.deployment.dependencies.nfsServerProvisioner }}
         - name: wso2am-gateway-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf
         {{ end }}
