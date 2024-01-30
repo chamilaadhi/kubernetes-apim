@@ -123,8 +123,7 @@ spec:
       - name: wso2am-gateway-storage-volume
         persistentVolumeClaim:
           claimName: {{ template "am-pattern-3.resource.prefix" . }}-am-gateway-shared-synapse-configs-volume-claim
-      {{ else }}
+      {{ end }}
       - name: wso2am-gateway-conf
         configMap:
           name: {{ template "am-pattern-3.resource.prefix" . }}-am-gateway-conf
-
