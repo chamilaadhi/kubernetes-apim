@@ -111,10 +111,8 @@ spec:
             - name: wso2am-tm-conf-entrypoint
               mountPath: /home/wso2carbon/docker-entrypoint.sh
               subPath: docker-entrypoint.sh
-            {{ if .Values.wso2.deployment.dependencies.mysql }}
-            - name: mysql-connector-jar
-              mountPath: /home/wso2carbon/wso2-artifact-volume/repository/components/dropins
-            {{ end }}
+            - name: db-connector-jar
+              mountPath: /home/wso2carbon/wso2-artifact-volume/repository/components/lib
       serviceAccountName: {{ .Values.kubernetes.serviceAccount }}
       {{- if .Values.wso2.deployment.am.imagePullSecrets }}
       imagePullSecrets:
@@ -134,7 +132,5 @@ spec:
           configMap:
             name: {{ template "am-pattern-3.resource.prefix" . }}-am-tm-conf-entrypoint
             defaultMode: 0407
-        {{ if .Values.wso2.deployment.dependencies.mysql }}
-        - name: mysql-connector-jar
+        - name: db-connector-jar
           emptyDir: {}
-        {{ end }}
