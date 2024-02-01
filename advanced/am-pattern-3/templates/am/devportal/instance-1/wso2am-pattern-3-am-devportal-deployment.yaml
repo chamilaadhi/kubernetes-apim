@@ -33,7 +33,6 @@ spec:
         product: apim
     spec:
       initContainers:
-        {{- if .Values.wso2.deployment.dependencies.mysql }}
         - name: init-db
           image: busybox:1.32
           command: ['sh', '-c', 'echo -e "Checking for the availability of DB Server deployment"; while ! nc -z "{{ .Values.wso2.deployment.am.db.hostname }}" {{ .Values.wso2.deployment.am.db.port }}; do sleep 1; printf "-"; done; echo -e "  >> DB Server has started";']
@@ -49,7 +48,6 @@ spec:
           volumeMounts:
             - name: db-connector-jar
               mountPath: /db-connector-jar
-        {{- end }}
         - name: init-km
           image: busybox:1.32
           command: ['sh', '-c', 'echo -e "Checking for the availability of Key Manager deployment"; while ! nc -z {{ template "am-pattern-3.resource.prefix" . }}-km-service 9443; do sleep 1; printf "-"; done; echo -e "  >> Key Manager has started";']
