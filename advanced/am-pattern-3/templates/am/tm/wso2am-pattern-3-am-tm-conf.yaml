@@ -42,18 +42,16 @@ data:
     create_admin_account = true
 
     [database.apim_db]
-    type = "{{ .Values.wso2.deployment.am.db.type }}"
-    url = "{{ .Values.wso2.deployment.am.db.apim.url }}"
-    username = "{{ .Values.wso2.deployment.am.db.apim.username }}"
-    password = "{{ .Values.wso2.deployment.am.db.apim.password }}"
-    driver = "{{ .Values.wso2.deployment.am.db.driver }}"
+    type = "h2"
+    url = "jdbc:h2:./repository/database/WSO2AM_DB;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE"
+    username = "wso2carbon"
+    password = "wso2carbon"
 
     [database.shared_db]
-    type = "{{ .Values.wso2.deployment.am.db.type }}"
-    url = "{{ .Values.wso2.deployment.am.db.apim_shared.url }}"
-    username = "{{ .Values.wso2.deployment.am.db.apim_shared.username }}"
-    password = "{{ .Values.wso2.deployment.am.db.apim_shared.password }}"
-    driver = "{{ .Values.wso2.deployment.am.db.driver }}"
+    type = "h2"
+    url = "jdbc:h2:./repository/database/WSO2SHARED_DB;DB_CLOSE_ON_EXIT=FALSE"
+    username = "wso2carbon"
+    password = "wso2carbon"
 
     [keystore.tls]
     file_name =  "wso2carbon.jks"
