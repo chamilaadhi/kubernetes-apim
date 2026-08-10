@@ -57,8 +57,10 @@ wso2:
     am:
       # Container image configurations
       # If a custom image must be used, uncomment 'dockerRegistry' and provide its value
+      # 'imageName' is the repository path within the registry. registry.wso2.com requires a
+      # '<project>/<image>' path; on DockerHub the equivalent is 'wso2am'
       dockerRegistry: "registry.wso2.com"
-      imageName: "wso2am"
+      imageName: "wso2-apim/am"
       imageTag: "4.4.0.0"
       # Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
