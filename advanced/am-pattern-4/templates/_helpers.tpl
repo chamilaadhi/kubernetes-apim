@@ -71,9 +71,9 @@ Common prefix prepended to Kubernetes resources of this chart
 {{- $dockerRegistry := .deployment.dockerRegistry | default "wso2" }}
 image: {{ $dockerRegistry }}/{{ $imageName }}{{- if not (eq $imageTag "") }}{{- printf ":%s" $imageTag -}}{{- end }}
 {{- else }}
-{{- $dockerRegistry := .deployment.dockerRegistry | default "docker.wso2.com" }}
+{{- $dockerRegistry := .deployment.dockerRegistry | default "registry.wso2.com" }}
 {{- $parts := len (split "." $imageTag) }}
-{{- if and (eq $parts 3) (eq $dockerRegistry "docker.wso2.com") }}
+{{- if and (eq $parts 3) (eq $dockerRegistry "registry.wso2.com") }}
 image: {{ $dockerRegistry }}/{{ $imageName }}{{- if not (eq $imageTag "") }}:{{ $imageTag }}.0{{- end }}
 {{- else }}
 image: {{ $dockerRegistry }}/{{ $imageName }}{{- if not (eq $imageTag "") }}:{{ $imageTag }}{{- end }}
